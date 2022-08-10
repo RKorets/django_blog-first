@@ -5,6 +5,11 @@
     <title>Title</title>
 </head>
 <body>
-
+<h1>List news</h1>
+<ul>
+    {% for el in news %}
+    <li>{{ el.create_at|date:'Y-m-d H:i:s' }}</li>
+    {% endfor %}
+</ul>
 </body>
 </html>
