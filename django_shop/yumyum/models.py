@@ -1,9 +1,22 @@
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
+from django.contrib.auth.models import User
 
 
 def directory_path(instance, filename):
     return f'photos/{instance.title}/{filename}'
+
+
+class Sex(models.Model):
+    gender = models.CharField(max_length=150, db_index=True, verbose_name='Стать')
+
+    def __str__(self):
+        return self.gender
+
+
+class CustomUserRegistration(User):
+    gender = models.ForeignKey('Sex', on_delete=models.PROTECT, verbose_name='Стать')
 
 
 class News(models.Model):
@@ -30,6 +43,7 @@ class News(models.Model):
 
 class Category(models.Model):
     title = models.CharField(max_length=150, db_index=True, verbose_name='Назва категорії')
+    update_at_last_news = models.DateTimeField(default=timezone.now())
 
     def get_absolute_url(self):
         return reverse('category', kwargs={'category_id': self.pk})  # category - імя маршруту в urls
@@ -41,3 +55,11 @@ class Category(models.Model):
         verbose_name = 'Категорія'
         verbose_name_plural = 'Категорії'
         ordering = ['title']
+
+
+class ViewsUser(models.Model):
+    name = models.CharField(max_length=150, verbose_name='Імя користувача')
+    news = models.ForeignKey('News', on_delete=models.PROTECT, verbose_name='новина')
+
+    def __str__(self):
+        return self.name

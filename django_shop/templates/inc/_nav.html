@@ -2,15 +2,21 @@
   <div class="container-fluid">
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'home'%}">Home</a>
-        </li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'home'%}">Main page</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'add_news'%}">Add news</a></li>
+      <ul class="nav nav-pills me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link {%if '/' == request.path%}active{%endif%}" href="{% url 'home'%}">Main page</a></li>
+          <li class="nav-item"><a class="nav-link {%if '/mail/' == request.path%}active{%endif%}" href="{% url 'mail'%}">Contact</a></li>
+        {% if request.user.is_authenticated %}
+        <li class="nav-item"><a class="nav-link {%if '/add-news/' == request.path%}active{%endif%}" href="{% url 'add_news'%}">Add news</a></li>
+        {% endif %}
 
       </ul>
-
+       <span class="navbar-text">
+          {% if request.user.is_authenticated %}
+         Вітаємо на сайті, {{user.username}} | <a href="{%url 'logout' %}">Вийти</a>
+          {% else %}
+         <a href="{%url 'register' %}">Registration</a> | <a href="{%url 'login' %}">Login</a>
+          {% endif %}
+       </span>
     </div>
   </div>
 </nav>

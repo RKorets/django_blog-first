@@ -1,9 +1,15 @@
 from django.urls import path
+from django.views.decorators.cache import cache_page   #
 
 from . import views
 
 urlpatterns = [
     # path('', views.index, name='home'),
+    path('register/', views.register, name='register'),
+    path('mail/', views.mail_send, name='mail'),
+    path('login/', views.user_login, name='login'),
+    path('logout/', views.user_logout, name='logout'),
+    # path('', cache_page(60)(views.HomeNews.as_view()), name='home'),
     path('', views.HomeNews.as_view(), name='home'),
     # path('category/<int:category_id>/', views.get_category, name='category'),
     path('category/<int:category_id>/', views.NewsByCategory.as_view(), name='category'),
